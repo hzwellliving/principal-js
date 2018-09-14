@@ -1,0 +1,32 @@
+{
+  "name": "principal-js",
+  "version": "1.0.0",
+  "main": "index.js",
+  "browser": "dist/principal.umd.js",
+  "repository": "git@github.com:hzwellliving/principal-js.git",
+  "author": "xiechao06 <xiechao06@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.0.1",
+    "@babel/preset-env": "^7.0.0",
+    "babelify": "^10.0.0",
+    "chai": "^4.1.2",
+    "mocha": "^5.2.0",
+    "standard": "^12.0.1",
+    "uglify-js": "^3.4.9"
+  },
+  "scripts": {
+    "build": "./build.sh",
+    "test": "node_modules/mocha/bin/mocha",
+    "prepublish": "./build.sh"
+  },
+  "standard": {
+    "globals": [
+      "it",
+      "describe"
+    ]
+  },
+  "dependencies": {
+    "debug": "^4.0.1"
+  }
+}
