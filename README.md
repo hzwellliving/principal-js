@@ -1,10 +1,18 @@
 # principal-js
 fine-grained permission control system
 
-## INSTALLATION
+## Installation
 
 ```
 $ yarn add principal-js
+```
+
+## Test
+
+```
+$ cd <principal-js>
+$ yarn install
+$ yarn test
 ```
 
 ## How it looks like?
