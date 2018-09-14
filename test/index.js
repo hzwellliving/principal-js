@@ -12,7 +12,7 @@ describe('principal', function () {
     /* eslint-disable no-unused-expressions */
     principal.can('edit.blog').should.be.false
 
-    let [create] = principal.getActions('create')
+    let { create } = principal.actions
 
     permission(
       create.blog.in3Days,

@@ -30,6 +30,13 @@ class Principal {
       }
       return s
     }
+    this.actions = (function (principal) {
+      return new Proxy({}, {
+        get (obj, prop) {
+          return principal.getAction(prop)
+        }
+      })
+    })(this)
   }
 
   getNeedHandlers (need) {
@@ -44,13 +51,6 @@ class Principal {
       throw new errors.PrincipalInvalidAction('invalid action ' + name)
     }
     return ret
-  }
-
-  getActions (...names) {
-    if (Array.isArray(names[0])) {
-      names = names[0]
-    }
-    return names.map(name => this.getAction(name))
   }
 
   fromJson (json) {

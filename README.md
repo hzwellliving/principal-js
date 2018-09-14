@@ -31,7 +31,7 @@ principal
 principal.can('edit.blog').should.be.true
 
 // or you could utilize the action object
-let [create] = principal.getActions('create')
+let {create} = principal.actions
 
 permission(
   create.blog.in3Days,
