@@ -17,7 +17,7 @@
   },
   "scripts": {
     "build": "./build.sh",
-    "test": "node_modules/mocha/bin/mocha",
+    "test": "node_modules/mocha/bin/mocha --watch *.js lib/*.js test/*.js",
     "prepublish": "./build.sh"
   },
   "standard": {

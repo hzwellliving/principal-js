@@ -181,6 +181,10 @@ class Principal {
     return ret
   }
 
+  resolveNeed (need) {
+    return needLib.resolveNeed(this.assureNeed(need))
+  }
+
   canOnly (need, args) {
     if (typeof need === 'string') {
       need = this.assureNeed(need)
@@ -199,6 +203,12 @@ class Principal {
     }
     let { action, object, decorations } = arg
     return decorations.reduce((a, b) => a[b], this.getAction(action)[object])
+  }
+
+  clone () {
+    let ret = new Principal().fromJson(this.toJson())
+    ret._labelTemplate = this._labelTemplate
+    return ret
   }
 }
 
