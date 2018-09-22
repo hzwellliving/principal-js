@@ -5,7 +5,7 @@ const Permission = require('../lib/permission')
 const { PrincipalPermissionDenied } = require('../lib/errors')
 
 describe('permission', function () {
-  it('try', function () {
+  it('test', function () {
     let principal = new Principal()
       .addAction('edit')
       .addObject('order')
@@ -21,22 +21,22 @@ describe('permission', function () {
 
     let permission = new Permission(principal, edit.order)
 
-    let { passed, failed } = permission.try()
+    let { passed, failed } = permission.test()
     passed[0].toString().should.be.equal(edit.order.toString())
     failed.length.should.be.equal(0)
 
     permission = new Permission(principal, edit.appointment)
     permission.can().should.be.false
-    ;(() => permission.test()).should.throw(PrincipalPermissionDenied)
+    ;(() => permission.try()).should.throw(PrincipalPermissionDenied)
 
     {
       permission = new Permission(principal,
         [edit.order, edit.appointment])
       permission.can().should.be.false
-      let { passed, failed } = permission.try()
+      let { passed, failed } = permission.test()
       passed[0].toString().should.be.equal(edit.order.toString())
       failed[0].toString().should.be.equal(edit.appointment.toString())
-      ;(() => permission.test()).should.throw(PrincipalPermissionDenied)
+      ;(() => permission.try()).should.throw(PrincipalPermissionDenied)
     }
 
     principal

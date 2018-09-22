@@ -3,7 +3,7 @@ const { Principal } = require('../')
 const {
   PrincipalInvalidAction, PrincipalInvalidObject, PrincipalInvalidDecoration
 } = require('../lib/errors')
-const { parseNeed } = require('../lib/need')
+const { parseNeed, resolve } = require('../lib/need')
 
 describe('action need toString and label', function () {
   it('action need without decoration', function () {
@@ -20,7 +20,7 @@ describe('action need toString and label', function () {
     let need = edit.order
 
     need.toString().should.equal('edit.order')
-    need.label.should.equal('编辑订单')
+    resolve(need).label.should.equal('编辑订单')
   })
 
   it('action need with decoration', function () {
@@ -39,12 +39,12 @@ describe('action need toString and label', function () {
     let need = edit.order.ofHisOwn
 
     need.toString().should.equal('edit.order.ofHisOwn')
-    need.label.should.equal('编辑自己的订单')
+    resolve(need).label.should.equal('编辑自己的订单')
 
     // 2 decorations
     need = need.in3Days
     need.toString().should.equal('edit.order.ofHisOwn.in3Days')
-    need.label.should.equal('编辑自己的,3天内的订单')
+    resolve(need).label.should.equal('编辑自己的,3天内的订单')
   })
 
   it('throw invalid action', function () {

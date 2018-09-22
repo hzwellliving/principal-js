@@ -57,4 +57,16 @@ describe('principal', function () {
     principal.hasBiggerNeedsThan('create.blog.in3Days').should.be.true
     principal.hasBiggerNeedsThan('edit.blog.in3Days').should.be.false
   })
+
+  it('clone', () => {
+    let principal1 = new Principal()
+      .addAction('edit')
+      .addAction('create')
+      .addObject('blog')
+      .addDecoration('in3Days')
+      .setScope('create.blog')
+
+    let principal2 = principal1.clone()
+    principal1.toJson().should.be.deep.equal(principal2.toJson())
+  })
 })
