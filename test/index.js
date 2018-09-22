@@ -60,7 +60,8 @@ describe('principal', function () {
 
   it('clone', () => {
     let principal1 = new Principal()
-      .addAction('edit')
+      .addAction('view')
+      .addAction('edit', '', 'view')
       .addAction('create')
       .addObject('blog')
       .addDecoration('in3Days')
