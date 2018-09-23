@@ -87,4 +87,19 @@ describe('permission', function () {
       }
     }).should.be.resolvedWith(true)
   })
+
+  it('and or', async function () {
+    let principal = new Principal()
+      .addAction('view')
+      .addObject('user')
+      .addObject('blog')
+
+    let permission = new Permission(principal, 'view.blog')
+      .or(new Permission(principal, 'view.user'))
+
+    principal.setScope('view.blog')
+    await permission.can().should.be.resolvedWith(true)
+    // principal.setScope('view.user')
+    // await permission.can().should.be.resolvedWith(true)
+  })
 })
