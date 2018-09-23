@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-expressions */
-require('chai').should()
+require('should')
 let { resolve } = require('../lib/action')
 let { Principal } = require('../')
 
@@ -16,9 +15,9 @@ describe('action', function () {
     let edit = principal.getAction('edit')
     let remove = principal.getAction('remove')
 
-    resolve(view).inherited(edit).should.be.false
-    resolve(edit).inherited(view).should.be.true
-    resolve(remove).inherited(view).should.be.true
+    resolve(view).inherited(edit).should.be.exactly(false)
+    resolve(edit).inherited(view).should.be.exactly(true)
+    resolve(remove).inherited(view).should.be.exactly(true)
   })
 
   it('pass', function () {
@@ -33,8 +32,8 @@ describe('action', function () {
     let edit = principal.getAction('edit')
     let remove = principal.getAction('remove')
 
-    resolve(view).pass(view).should.be.true
-    resolve(edit).pass(view).should.be.true
-    resolve(remove).pass(view).should.be.true
+    resolve(view).pass(view).should.be.exactly(true)
+    resolve(edit).pass(view).should.be.exactly(true)
+    resolve(remove).pass(view).should.be.exactly(true)
   })
 })

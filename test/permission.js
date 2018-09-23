@@ -1,11 +1,10 @@
-/* eslint-disable no-unused-expressions */
-require('chai').should()
+require('should')
 const { Principal } = require('../')
 const Permission = require('../lib/permission')
 const { PrincipalPermissionDenied } = require('../lib/errors')
 
 describe('permission', function () {
-  it('test', function () {
+  it('test', async function () {
     let principal = new Principal()
       .addAction('edit')
       .addObject('order')
@@ -21,33 +20,33 @@ describe('permission', function () {
 
     let permission = new Permission(principal, edit.order)
 
-    let { passed, failed } = permission.test()
+    let { passed, failed } = await permission.test()
     passed[0].toString().should.be.equal(edit.order.toString())
     failed.length.should.be.equal(0)
 
     permission = new Permission(principal, edit.appointment)
-    permission.can().should.be.false
-    ;(() => permission.try()).should.throw(PrincipalPermissionDenied)
+    await permission.can().should.be.resolvedWith(false)
+    await permission.try().should.be.rejectedWith(PrincipalPermissionDenied)
 
     {
       permission = new Permission(principal,
         [edit.order, edit.appointment])
-      permission.can().should.be.false
-      let { passed, failed } = permission.test()
+      await permission.can().should.be.resolvedWith(false)
+      let { passed, failed } = await permission.test()
       passed[0].toString().should.be.equal(edit.order.toString())
       failed[0].toString().should.be.equal(edit.appointment.toString())
-      ;(() => permission.try()).should.throw(PrincipalPermissionDenied)
+      await permission.try().should.be.rejectedWith(PrincipalPermissionDenied)
     }
 
     principal
       .setScope(scope => scope.concat(edit.appointment))
 
     permission = new Permission(principal, edit.appointment)
-    permission.can().should.be.true
+    await permission.can().should.be.resolvedWith(true)
     permission = new Permission(principal, [edit.order, edit.appointment])
-    permission.can().should.be.true
+    await permission.can().should.be.resolvedWith(true)
   })
-  it('with arguments', function () {
+  it('with arguments', async function () {
     let principal = new Principal()
 
     principal
@@ -68,24 +67,24 @@ describe('permission', function () {
       'edit.book.horror'
     )
 
-    permission.can({
+    await permission.can({
       'edit.book.bad': {
         bad: true
       }
-    }).should.be.true
+    }).should.be.resolvedWith(true)
 
-    permission.can({
+    await permission.can({
       'edit.book.bad': {
         bad: false
       }
-    }).should.be.false
+    }).should.be.resolvedWith(false)
 
     // I have a strong need
     principal.setScope(it => it.concat('edit.book'))
-    permission.can({
+    await permission.can({
       'edit.book.bad': {
         bad: false
       }
-    }).should.be.true
+    }).should.be.resolvedWith(true)
   })
 })
