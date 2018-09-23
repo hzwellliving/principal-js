@@ -5,6 +5,7 @@ const Permission = require('./lib/permission')
 const { createAction } = require('./lib/action')
 const needLib = require('./lib/need')
 const actionLib = require('./lib/action')
+const util = require('util')
 
 function objectValues (obj) {
   let ret = []
@@ -37,6 +38,10 @@ class Principal {
         }
       })
     })(this)
+  }
+
+  [util.inspect.custom] () {
+    return this.toJson()
   }
 
   getNeedHandlers (need) {
