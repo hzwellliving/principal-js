@@ -80,7 +80,7 @@ describe('principal', function () {
         return new Promise(function (resolve) {
           setTimeout(function () {
             resolve(user.id === blog.userId)
-          }, 1000)
+          }, 100)
         })
       })
       .setScope('edit.blog.ownedByMe')
