@@ -1,4 +1,4 @@
-require('chai').should()
+require('should')
 const { Principal } = require('../')
 const {
   PrincipalInvalidAction, PrincipalInvalidObject, PrincipalInvalidDecoration
@@ -54,7 +54,7 @@ describe('action need toString and label', function () {
       .addAction('edit')
 
     ;(() => principal.getAction('create')).should
-      .throws(PrincipalInvalidAction)
+      .throw(PrincipalInvalidAction)
   })
 
   it('throw invalid object', function () {
@@ -67,7 +67,7 @@ describe('action need toString and label', function () {
     let edit = principal.getAction('edit')
 
     ;(() => edit.appointment).should
-      .throws(PrincipalInvalidObject)
+      .throw(PrincipalInvalidObject)
   })
 
   it('throw invalid decoration', function () {
@@ -81,7 +81,7 @@ describe('action need toString and label', function () {
     let edit = principal.getAction('edit')
 
     ;(() => edit.order.ofHerOwn).should
-      .throws(PrincipalInvalidDecoration)
+      .throw(PrincipalInvalidDecoration)
   })
 })
 

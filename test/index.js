@@ -1,3 +1,4 @@
+require('should')
 const { principal, permission, Principal, Permission } = require('../')
 
 describe('principal', function () {
@@ -9,21 +10,20 @@ describe('principal', function () {
       .addDecoration('in3Days')
       .setScope('create.blog')
 
-    /* eslint-disable no-unused-expressions */
-    principal.can('edit.blog').should.be.false
+    principal.can('edit.blog').should.be.resolvedWith(false)
 
     let { create } = principal.actions
 
     permission(
       create.blog.in3Days,
       create.blog
-    ).can().should.be.true
+    ).can().should.be.resolvedWith(true)
 
     let principal2 = new Principal()
       .fromJson(principal.toJson())
-    principal2.can('edit.blog').should.be.false
+    principal2.can('edit.blog').should.be.resolvedWith(false)
     new Permission(principal2, 'create.blog.in3Days')
-      .can().should.be.true
+      .can().should.be.resolvedWith(true)
   })
 
   it('assureNeed', () => {
@@ -50,12 +50,12 @@ describe('principal', function () {
       .addDecoration('in3Days')
       .setScope('create.blog')
 
-    principal.hasBiggerNeedsThan('edit.blog').should.be.false
-    principal.hasBiggerNeedsThan('create.blog').should.be.false
+    principal.hasBiggerNeedsThan('edit.blog').should.be.exactly(false)
+    principal.hasBiggerNeedsThan('create.blog').should.be.exactly(false)
     principal.setScope(it => it.concat('create.blog.in3Days'))
-    principal.hasBiggerNeedsThan('create.blog').should.be.false
-    principal.hasBiggerNeedsThan('create.blog.in3Days').should.be.true
-    principal.hasBiggerNeedsThan('edit.blog.in3Days').should.be.false
+    principal.hasBiggerNeedsThan('create.blog').should.be.exactly(false)
+    principal.hasBiggerNeedsThan('create.blog.in3Days').should.be.exactly(true)
+    principal.hasBiggerNeedsThan('edit.blog.in3Days').should.be.exactly(false)
   })
 
   it('clone', () => {
@@ -68,6 +68,28 @@ describe('principal', function () {
       .setScope('create.blog')
 
     let principal2 = principal1.clone()
-    principal1.toJson().should.be.deep.equal(principal2.toJson())
+    principal1.toJson().should.deepEqual(principal2.toJson())
+  })
+
+  it('handler', async () => {
+    let principal = new Principal()
+      .addAction('edit')
+      .addObject('blog')
+      .addDecoration('ownedByMe')
+      .addNeedHandler('edit.blog.ownedByMe', async function editBlogOwnedByMe ({ blog, user }) {
+        return new Promise(function (resolve) {
+          setTimeout(function () {
+            resolve(user.id === blog.userId)
+          }, 1000)
+        })
+      })
+      .setScope('edit.blog.ownedByMe')
+
+    await principal.can('edit.blog.ownedByMe', {
+      'edit.blog.ownedByMe': { blog: { userId: 2 }, user: { id: 1 } }
+    }).should.be.resolvedWith(false)
+    await principal.can('edit.blog.ownedByMe', {
+      'edit.blog.ownedByMe': { blog: { userId: 1 }, user: { id: 1 } }
+    }).should.be.resolvedWith(true)
   })
 })
