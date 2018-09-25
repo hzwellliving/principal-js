@@ -23,7 +23,8 @@
   "standard": {
     "globals": [
       "it",
-      "describe"
+      "describe",
+      "beforeEach"
     ]
   },
   "dependencies": {
