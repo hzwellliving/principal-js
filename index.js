@@ -1,7 +1,7 @@
 const debug = require('debug')('principal')
 const errors = require('./lib/errors')
 
-const Permission = require('./lib/permission')
+const { createPermission } = require('./lib/permission')
 const { createAction } = require('./lib/action')
 const needLib = require('./lib/need')
 const actionLib = require('./lib/action')
@@ -47,7 +47,7 @@ class Principal {
   getNeedHandlers (need) {
     // need will be converted using toString automatically, so don't worry
     // if it is a Need
-    return this._needHandlers[need]
+    return this._needHandlers[need] || []
   }
 
   getAction (name) {
@@ -163,15 +163,11 @@ class Principal {
   }
 
   can (needs, args) {
-    return new Permission(this, needs).can(args)
-  }
-
-  test (needs, args) {
-    return new Permission(this, needs).try(args)
+    return createPermission(this, needs).can(args)
   }
 
   try (needs, args) {
-    return new Permission(this, needs).try(args)
+    return createPermission(this, needs).try(args)
   }
 
   hasBiggerNeedsThan (need, args) {
@@ -188,15 +184,6 @@ class Principal {
 
   resolveNeed (need) {
     return needLib.resolveNeed(this.assureNeed(need))
-  }
-
-  canOnly (need, args) {
-    if (typeof need === 'string') {
-      need = this.assureNeed(need)
-    }
-    let { passed } = new Permission(this, need).try(args)
-    console.log(passed.map(it => it.toString()))
-    return passed.length === 1 && passed[0].toString() === need.toString()
   }
 
   assureNeed (arg) {
@@ -217,17 +204,8 @@ class Principal {
   }
 }
 
-function permission (...needs) {
-  return new Permission(_principal, ...needs)
-}
-
-var _principal = new Principal()
-
 module.exports = {
   Principal,
-  Permission,
-  permission,
-  // singleton
-  principal: _principal,
-  errors
+  errors,
+  createPermission
 }
