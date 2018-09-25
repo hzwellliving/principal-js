@@ -1,9 +1,9 @@
 require('should')
-const { principal, permission, Principal, Permission } = require('../')
+const { Principal, createPermission } = require('../')
 
 describe('principal', function () {
   it('toJson and fromJson', () => {
-    principal
+    let principal = new Principal()
       .addAction('edit')
       .addAction('create')
       .addObject('blog')
@@ -14,15 +14,15 @@ describe('principal', function () {
 
     let { create } = principal.actions
 
-    permission(
+    createPermission(principal, [
       create.blog.in3Days,
       create.blog
-    ).can().should.be.resolvedWith(true)
+    ]).can().should.be.resolvedWith(true)
 
     let principal2 = new Principal()
       .fromJson(principal.toJson())
     principal2.can('edit.blog').should.be.resolvedWith(false)
-    new Permission(principal2, 'create.blog.in3Days')
+    createPermission(principal2, 'create.blog.in3Days')
       .can().should.be.resolvedWith(true)
   })
 
