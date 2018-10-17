@@ -26,7 +26,7 @@ class Principal {
     this._needHandlers = {}
     this._defaultLabelTemplate = ({ action, object, decorations }) => {
       let s = action + ' ' + object
-      if (decorations) {
+      if (decorations && decorations.length) {
         s += `[${decorations.join(',')}]`
       }
       return s
