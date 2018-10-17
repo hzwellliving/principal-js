@@ -1,6 +1,6 @@
 {
   "name": "principal-js",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "main": "index.js",
   "browser": "dist/principal.umd.js",
   "repository": "git@github.com:hzwellliving/principal-js.git",
