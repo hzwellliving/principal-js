@@ -183,7 +183,7 @@ class Principal {
   }
 
   resolveNeed (need) {
-    return needLib.resolveNeed(this.assureNeed(need))
+    return needLib.resolve(this.assureNeed(need))
   }
 
   assureNeed (arg) {
