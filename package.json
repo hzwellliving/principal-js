@@ -1,24 +1,31 @@
 {
   "name": "principal-js",
   "version": "2.1.2",
-  "main": "index.js",
-  "browser": "dist/principal.umd.js",
+  "main": "dist/principal.cjs.js",
+  "module": "dist/principal.esm.js",
   "repository": "git@github.com:hzwellliving/principal-js.git",
   "author": "xiechao06 <xiechao06@gmail.com>",
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.0.1",
+    "@babel/polyfill": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
+    "@babel/register": "^7.0.0",
+    "babel-plugin-add-module-exports": "^1.0.0",
+    "babel-plugin-source-map-support": "^2.0.1",
     "babelify": "^10.0.0",
     "mocha": "^5.2.0",
+    "rollup": "^0.66.6",
+    "rollup-plugin-babel": "^4.0.3",
+    "rollup-plugin-shim": "^1.0.0",
     "should": "^13.2.3",
     "standard": "^12.0.1",
     "uglify-js": "^3.4.9"
   },
   "scripts": {
-    "build": "./build.sh",
-    "test": "node_modules/mocha/bin/mocha --watch test/*.js",
-    "prepublish": "./build.sh"
+    "build": "rollup -c",
+    "test": "mocha --watch --require @babel/register --require @babel/polyfill --require source-map-support",
+    "prepublishOnly": "npm run build"
   },
   "standard": {
     "globals": [
@@ -28,6 +35,9 @@
     ]
   },
   "dependencies": {
-    "debug": "^4.0.1"
+    "@babel/plugin-external-helpers": "^7.0.0",
+    "debug": "^4.0.1",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-node-resolve": "^3.4.0"
   }
 }

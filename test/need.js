@@ -1,5 +1,5 @@
 require('should')
-const { Principal } = require('../')
+const { Principal } = require('../index')
 const {
   PrincipalInvalidAction, PrincipalInvalidObject, PrincipalInvalidDecoration
 } = require('../lib/errors')

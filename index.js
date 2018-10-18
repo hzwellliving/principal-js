@@ -1,11 +1,12 @@
-const debug = require('debug')('principal')
-const errors = require('./lib/errors')
+import debug_ from 'debug'
+import * as needLib from './lib/need'
+import { createAction } from './lib/action'
+import util from 'util'
+import * as errors from './lib/errors'
+import { createPermission } from './lib/permission'
+import resolveAction from './lib/resolve-action'
 
-const { createPermission } = require('./lib/permission')
-const { createAction } = require('./lib/action')
-const needLib = require('./lib/need')
-const actionLib = require('./lib/action')
-const util = require('util')
+const debug = debug_('principal')
 
 function objectValues (obj) {
   let ret = []
@@ -17,7 +18,7 @@ function objectValues (obj) {
   return ret
 }
 
-class Principal {
+export class Principal {
   constructor () {
     this._actions = {}
     this._objects = {}
@@ -82,13 +83,13 @@ class Principal {
 
   toJson () {
     return {
-      actions: objectValues(this._actions).map(it => actionLib.resolve(it).toJson()),
+      actions: objectValues(this._actions).map(it => resolveAction(it).toJson()),
       objects: objectValues(this._objects),
       decorations: objectValues(this._decorations),
       scope: this._scope.map(it => {
         it = needLib.resolve(it)
         return {
-          action: actionLib.resolve(it.action).name,
+          action: resolveAction(it.action).name,
           object: it.object.name,
           decorations: it.decorations.map(it => it.name)
         }
@@ -204,8 +205,9 @@ class Principal {
   }
 }
 
-module.exports = {
-  Principal,
-  errors,
-  createPermission
+export { default as errors } from './lib/errors'
+export { createPermission } from './lib/permission'
+export { Need } from './lib/need'
+export const utils = {
+  parseNeed: needLib.parseNeed
 }

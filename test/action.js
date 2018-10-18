@@ -1,6 +1,6 @@
 require('should')
-let { resolve } = require('../lib/action')
-let { Principal } = require('../')
+const resolveAction = require('../lib/resolve-action').default
+const { Principal } = require('../index')
 
 describe('action', function () {
   it('inherited', function () {
@@ -15,9 +15,9 @@ describe('action', function () {
     let edit = principal.getAction('edit')
     let remove = principal.getAction('remove')
 
-    resolve(view).inherited(edit).should.be.exactly(false)
-    resolve(edit).inherited(view).should.be.exactly(true)
-    resolve(remove).inherited(view).should.be.exactly(true)
+    resolveAction(view).inherited(edit).should.be.exactly(false)
+    resolveAction(edit).inherited(view).should.be.exactly(true)
+    resolveAction(remove).inherited(view).should.be.exactly(true)
   })
 
   it('pass', function () {
@@ -32,8 +32,8 @@ describe('action', function () {
     let edit = principal.getAction('edit')
     let remove = principal.getAction('remove')
 
-    resolve(view).pass(view).should.be.exactly(true)
-    resolve(edit).pass(view).should.be.exactly(true)
-    resolve(remove).pass(view).should.be.exactly(true)
+    resolveAction(view).pass(view).should.be.exactly(true)
+    resolveAction(edit).pass(view).should.be.exactly(true)
+    resolveAction(remove).pass(view).should.be.exactly(true)
   })
 })

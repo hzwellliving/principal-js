@@ -1,5 +1,5 @@
 require('should')
-const { Principal } = require('../')
+const { Principal } = require('../index')
 const { createPermission } = require('../lib/permission')
 const { PrincipalPermissionDenied } = require('../lib/errors')
 
