@@ -4,10 +4,8 @@
       "targets": {
         "browsers": ["last 2 versions", "safari >= 7"]
       },
-	  "modules": "commonjs"
+      // https://babeljs.io/docs/en/babel-preset-env#usebuiltins
+      "useBuiltIns": "entry"
     }]
-  ],
-  "plugins": [
-    "add-module-exports"
   ]
 }

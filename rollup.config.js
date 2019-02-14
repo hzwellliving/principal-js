@@ -4,37 +4,17 @@ import babel from 'rollup-plugin-babel'
 import pkg from './package.json'
 
 export default [
-  // browser-friendly UMD build
-  // {
-  //   entry: 'src/index.js',
-  //   dest: pkg.browser,
-  //   format: 'umd',
-  //   moduleName: 'principal-js',
-  //   plugins: [
-  //     // resolve(),
-  //     // commonjs(),
-  //     babel({
-  //       exclude: ['node_modules/**'],
-  //       externalHelpers: true,
-  //       plugins: ['@babel/plugin-external-helpers', 'add-module-exports'],
-  //       presets: ['@babel/preset-env']
-  //     })
-  //   ]
-  // },
   {
-    input: 'index.js',
+    input: pkg.source,
     external: ['util', 'debug'],
     output: {
-      format: 'es',
+      format: 'esm',
       file: pkg.module
     },
     plugins: [
+      babel(),
       resolve(),
-      commonjs(),
-      babel({
-        exclude: ['node_modules/**'],
-        presets: [['@babel/preset-env', { useBuiltIns: 'usage' }]]
-      })
+      commonjs()
     ]
   },
   {
@@ -45,12 +25,9 @@ export default [
     },
     external: ['util', 'debug'],
     plugins: [
+      babel(),
       resolve(),
-      commonjs(),
-      babel({
-        exclude: ['node_modules/**'],
-        presets: [['@babel/preset-env', { useBuiltIns: 'usage' }]]
-      })
+      commonjs()
     ]
   }
 ]

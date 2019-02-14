@@ -1,5 +1,5 @@
 require('should')
-const decorationsPass = require('../lib/decorations-pass')
+const decorationsPass = require('../lib/decorations-pass').default
 
 describe('decorations pass', function () {
   it('decorations pass', function () {

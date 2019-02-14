@@ -1,3 +1,4 @@
+import '@babel/polyfill'
 import debug_ from 'debug'
 import * as needLib from './lib/need'
 import { createAction } from './lib/action'
